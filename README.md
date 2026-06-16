@@ -43,7 +43,8 @@ Grad-CAM is used to show which parts of the image influence the model’s decisi
 2. Run all cells
 3. View predictions and Grad-CAM visualization
 
----
+## 🔗 GitHub Repository
+https://github.com/adxam1257-cpu/fashion-product-classification-xai
 
 ## 👨‍💻 Author
 Atkhamjon Abdumannonov

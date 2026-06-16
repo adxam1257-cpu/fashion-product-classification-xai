@@ -39,9 +39,10 @@ Grad-CAM is used to show which parts of the image influence the model’s decisi
 ---
 
 ## 🚀 How to Run
-1. Open notebook in Google Colab
-2. Run all cells
-3. View predictions and Grad-CAM visualization
+1. Open the notebook in Google Colab
+2. Run all cells sequentially
+3. Ensure dataset is loaded correctly
+4. View predictions and Grad-CAM visualization results
 
 ## 🔗 GitHub Repository
 https://github.com/adxam1257-cpu/fashion-product-classification-xai

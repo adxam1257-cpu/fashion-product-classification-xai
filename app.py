@@ -21,7 +21,9 @@ def load_model():
         tf.keras.layers.Dense(128, activation='relu'),
         tf.keras.layers.Dense(10, activation='softmax')
     ])
-    model.load_weights("model_weights.h5")
+    import os
+weights_path = os.path.join(os.path.dirname(__file__), "model_weights.h5")
+model.load_weights(weights_path)
     return model
 
 model = load_model()

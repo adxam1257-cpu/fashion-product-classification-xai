@@ -1,37 +1,46 @@
 import streamlit as st
-import numpy as np
 import tensorflow as tf
+import numpy as np
 from PIL import Image
 
-# Load model
+CLASS_NAMES = [
+    'T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
+    'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot'
+]
+
 @st.cache_resource
 def load_model():
-    return tf.keras.models.load_model("model.keras", compile=False)
+    model = tf.keras.Sequential([
+        tf.keras.Input(shape=(28, 28)),
+        tf.keras.layers.Reshape((28, 28, 1)),
+        tf.keras.layers.Conv2D(32, (3, 3), activation='relu'),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+        tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+        tf.keras.layers.Flatten(),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(10, activation='softmax')
+    ])
+    model.load_weights("model_weights.h5")
+    return model
 
 model = load_model()
 
-class_names = [
-    "T-shirt/top", "Trouser", "Pullover", "Dress", "Coat",
-    "Sandal", "Shirt", "Sneaker", "Bag", "Ankle boot"
-]
-
-st.title("Fashion Product Classification (CNN + AI)")
-
+st.title("Fashion Product Classification (CNN + XAI)")
 st.write("Upload an image and the model will predict the fashion category.")
 
-uploaded_file = st.file_uploader("Choose an image", type=["jpg", "png", "jpeg"])
+uploaded_file = st.file_uploader("Choose an image", type=["jpg", "png"])
 
 if uploaded_file is not None:
-    image = Image.open(uploaded_file).convert("L")
-    image = image.resize((28, 28))
+    image = Image.open(uploaded_file).convert("L").resize((28, 28))
+    st.image(image, caption="Uploaded Image", width=150)
 
     img_array = np.array(image) / 255.0
-    img_array = img_array.reshape(1, 28, 28, 1)
+    img_array = img_array.reshape(1, 28, 28)
 
-    st.image(image, caption="Uploaded Image", use_column_width=True)
+    predictions = model.predict(img_array)
+    predicted_class = CLASS_NAMES[np.argmax(predictions)]
+    confidence = np.max(predictions) * 100
 
-    prediction = model.predict(img_array)
-    predicted_class = np.argmax(prediction)
-
-    st.write("### Prediction:", class_names[predicted_class])
-    st.write("Confidence:", float(np.max(prediction)))
+    st.success(f"Prediction: **{predicted_class}**")
+    st.info(f"Confidence: **{confidence:.2f}%**")

@@ -6,7 +6,7 @@ from PIL import Image
 # Load model
 @st.cache_resource
 def load_model():
-return tf.keras.models.load_model("model.keras", compile=False)
+    return tf.keras.models.load_model("model.keras", compile=False)
 
 model = load_model()
 

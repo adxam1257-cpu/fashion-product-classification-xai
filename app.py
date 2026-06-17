@@ -4,7 +4,7 @@ import tensorflow as tf
 from PIL import Image
 
 # Load model
-model = tf.keras.models.load_model("model.h5")
+model = tf.keras.models.load_model("model.h5", compile=False)
 
 class_names = [
     "T-shirt/top", "Trouser", "Pullover", "Dress", "Coat",

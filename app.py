@@ -1,7 +1,7 @@
 import os
+import numpy as np
 import streamlit as st
 import tensorflow as tf
-import numpy as np
 from PIL import Image
 
 CLASS_NAMES = [
@@ -22,8 +22,10 @@ def load_model():
         tf.keras.layers.Dense(128, activation='relu'),
         tf.keras.layers.Dense(10, activation='softmax')
     ])
-    weights_path = os.path.join(os.path.dirname(__file__), "model_weights.h5")
-    model.load_weights(weights_path)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    weights_path = os.path.join(base_dir, "model_weights.npy")
+    weights = np.load(weights_path, allow_pickle=True)
+    model.set_weights(weights)
     return model
 
 model = load_model()
